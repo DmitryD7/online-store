@@ -1,0 +1,29 @@
+.item {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  text-align: start;
+  position: relative;
+  .media {
+    width: 150px;
+    height: 150px;
+  }
+  .content {
+    width: 251px;
+  }
+  .actions{
+    align-items: center;
+    justify-content: center;
+  }
+  .price {
+    position: absolute;
+    top: 16px;
+    right: 28px;
+  }
+  .deleteButton {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
+}
+

@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h1 h2, h3, h4, h5, h6, p, span {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.0075em;
+  color: rgba(0, 0, 0, 0.87);
+}
