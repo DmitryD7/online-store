@@ -62,6 +62,6 @@ export const CartItem = React.memo((props: CartItemPropsType) => {
     </>
 })
 
-type CartItemPropsType = {
+export type CartItemPropsType = {
     cartItem: CartItemType
 }
