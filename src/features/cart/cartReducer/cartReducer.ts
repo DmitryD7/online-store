@@ -59,3 +59,5 @@ export const slice = createSlice({
     }
 })
 export const {addItemToCart, removeItem, increaseCount, decreaseCount, setTotalPrice} = slice.actions
+
+export type InitialStateType = typeof initialState
