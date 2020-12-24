@@ -6,6 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from "./application/store";
 import {HashRouter} from "react-router-dom";
+import firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDUCvqU9XYMQrwNQV1gCIb_8HMRoJIDznA",
+    authDomain: "online-store-1600b.firebaseapp.com",
+    databaseURL: "https://online-store-1600b-default-rtdb.firebaseio.com",
+    projectId: "online-store-1600b",
+    storageBucket: "online-store-1600b.appspot.com",
+    messagingSenderId: "909728422193",
+    appId: "1:909728422193:web:aebede379754c444bef810"
+}
+
+firebase.initializeApp(firebaseConfig)
 
 ReactDOM.render(
     <Provider store={store}>
