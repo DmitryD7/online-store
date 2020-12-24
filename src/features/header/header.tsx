@@ -32,7 +32,7 @@ export const Header = React.memo(() => {
                             to={'/cart'}>
                     <ShoppingCartIcon/>
                     <Typography variant="h6" className={s.title}>
-                        <ins>Your Cart</ins>
+                        <ins className={s.buttonLabel}>Your Cart</ins>
                         {totalPrice > 0 && <i>{totalPrice}$</i>}
                     </Typography>
                 </IconButton>
