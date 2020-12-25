@@ -11,17 +11,22 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {useDispatch} from "react-redux";
 import {ItemType} from "../../../items/itemsTypes";
-import {cartActions} from "../../../index";
+import {cartActions, itemsActions} from "../../../index";
 
 export const CartItem = React.memo((props: CartItemPropsType) => {
     const dispatch = useDispatch()
     const {id, title, description, price, itemImage, count} = props.cartItem
     const {removeItem, increaseCount, decreaseCount} = cartActions
+    const {updateItemStatus} = itemsActions
 
 
-    const onRemoveItemHandler = useCallback(() => dispatch(removeItem({id})), [id, dispatch])
-    const onIncreaseCountHandler = useCallback(() => dispatch(increaseCount({id})), [id, dispatch])
-    const onDecreaseCountHandler = useCallback(() => dispatch(decreaseCount({id})), [id, dispatch])
+    const onRemoveItemHandler = useCallback(() => {
+        dispatch(updateItemStatus({id, isAdded: false}))
+        dispatch(removeItem({id}))
+    }, [dispatch, id, removeItem,updateItemStatus])
+
+    const onIncreaseCountHandler = useCallback(() => dispatch(increaseCount({id})), [id, dispatch, increaseCount])
+    const onDecreaseCountHandler = useCallback(() => dispatch(decreaseCount({id})), [id, dispatch, decreaseCount])
 
     return <>
         <Card className={s.item} variant={"elevation"}>

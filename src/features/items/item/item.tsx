@@ -16,14 +16,14 @@ import {cartActions, itemsActions} from "../../index";
 export const Item = React.memo((props: ItemPropsType) => {
     const dispatch = useDispatch()
     const {itemImage, price, description, title, id, isAdded} = props.item
-    const {changeStatus} = itemsActions
     const {addItemToCart} = cartActions
+    const {updateItemStatus} = itemsActions
     // eslint-disable-next-line
-    const cartItem: ItemType = {count: 1, itemImage, price, description, title, id, isAdded: true}
+    const cartItem: ItemType = {count: 1, itemImage, price, description, title, id, isAdded}
 
     const onAddClickHandler = useCallback(() => {
         dispatch(addItemToCart({item: cartItem}))
-        dispatch(changeStatus({isAdded: true, id}))
+        dispatch(updateItemStatus({id, isAdded: true}))
     }, [id, cartItem, dispatch])
 
     return <>

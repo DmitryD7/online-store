@@ -1,11 +1,10 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {v1} from "uuid";
 import {ItemsType, ItemType} from "../../items/itemsTypes";
 
 const initialState = {
     cartItems: [
         {
-            id: v1(),
+            id: '0',
             title: 'Car',
             description: 'toy for children',
             price: 50,
@@ -14,7 +13,7 @@ const initialState = {
             isAdded: true
         },
         {
-            id: v1(),
+            id: '1',
             title: 'Security camera',
             description: 'wireless smart home camera',
             price: 150,

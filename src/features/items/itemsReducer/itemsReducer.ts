@@ -1,8 +1,8 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import {ItemsType} from "../itemsTypes"
 import {itemsAPI} from "../../../api/aplicationAPI";
 
-export const fetchItems = createAsyncThunk<{items: ItemsType}, undefined>('items/fetchItems', async (param, thunkAPI) => {
+const fetchItems = createAsyncThunk<{ items: ItemsType }, undefined>('items/fetchItems', async () => {
     try {
         const response = await itemsAPI.fetchItems()
         return {items: response.data}
@@ -11,22 +11,31 @@ export const fetchItems = createAsyncThunk<{items: ItemsType}, undefined>('items
     }
 })
 
+const updateItemStatus = createAsyncThunk<{ id: string, isAdded: boolean }, { id: string, isAdded: boolean }>('items/updateItemStatus', async (param) => {
+    try {
+        const response = await itemsAPI.changeItemStatus(param.id, param.isAdded)
+        return {id: param.id, isAdded: param.isAdded}
+    } catch (e) {
+        throw new Error(e.message)
+    }
+})
+
 export const slice = createSlice({
     name: 'items',
     initialState: [] as ItemsType,
-    reducers: {
-        changeStatus(state, action: PayloadAction<{ isAdded: boolean, id: string }>) {
-            const index = state.findIndex(tl => tl.id === action.payload.id)
-            state[index].isAdded = action.payload.isAdded
-        }
-    },
+    reducers: {},
     extraReducers: builder => {
         builder.addCase(fetchItems.fulfilled, ((state, action) => {
             return action.payload.items
         }))
+        builder.addCase(updateItemStatus.fulfilled, (state, action) => {
+            const index = state.findIndex(tl => tl.id === action.payload.id)
+            state[index].isAdded = action.payload.isAdded
+        })
     }
 })
 
 export const asyncItemsActions = {
-    fetchItems
+    fetchItems,
+    updateItemStatus
 }
