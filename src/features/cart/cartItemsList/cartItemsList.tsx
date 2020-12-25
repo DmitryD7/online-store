@@ -3,13 +3,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../application/types";
 import {CartItem} from "./cartItem/cartItem";
 import s from "./cartItemsList.module.scss"
-import {CartItemsType} from "../cartItemsTypes";
-import {calculateTotalPrice} from "../cartReducer/cartReducer";
+import {ItemsType} from "../../items/itemsTypes";
+import {cartActions} from "../../index";
 
 export const CartItemsList = () => {
     const dispatch = useDispatch()
-    const cartItems = useSelector<AppRootStateType, CartItemsType>(state => state.cart.cartItems)
+    const cartItems = useSelector<AppRootStateType, ItemsType>(state => state.cart.cartItems)
     const totalPrice = useSelector<AppRootStateType, number>(state => state.cart.totalPrice)
+    const {calculateTotalPrice} = cartActions
 
     useEffect(() => {
         dispatch(calculateTotalPrice(cartItems))

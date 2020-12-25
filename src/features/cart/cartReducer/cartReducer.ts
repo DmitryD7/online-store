@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {v1} from "uuid";
-import {CartItemsType, CartItemType} from "../cartItemsTypes";
+import {ItemsType, ItemType} from "../../items/itemsTypes";
 
 const initialState = {
     cartItems: [
@@ -11,6 +11,7 @@ const initialState = {
             price: 50,
             itemImage: "https://cdn.shopify.com/s/files/1/0049/3732/products/5_900x.jpg?v=1334936803",
             count: 1,
+            isAdded: true
         },
         {
             id: v1(),
@@ -19,12 +20,13 @@ const initialState = {
             price: 150,
             itemImage: 'https://pro.sony/s3/2017/09/07145637/Cateogry-product-Imagery_Video-Security.jpg',
             count: 1,
+            isAdded: true
         },
-    ] as CartItemsType,
+    ] as ItemsType,
     totalPrice: 0
 }
 
-export const calculateTotalPrice = createAsyncThunk<void, CartItemsType>('cart/calculateTotalPrice', async (param, thunkAPI) => {
+export const calculateTotalPrice = createAsyncThunk<void, ItemsType>('cart/calculateTotalPrice', async (param, thunkAPI) => {
     let totalPrice = 0
     await param.forEach(elem => {
         totalPrice += elem.price * elem.count
@@ -36,7 +38,7 @@ export const slice = createSlice({
     name: 'cart',
     initialState: initialState,
     reducers: {
-        addItemToCart(state, action: PayloadAction<{ item: CartItemType }>) {
+        addItemToCart(state, action: PayloadAction<{ item: ItemType }>) {
             state.cartItems.push({...action.payload.item})
         },
         removeItem(state, action: PayloadAction<{ id: string }>) {

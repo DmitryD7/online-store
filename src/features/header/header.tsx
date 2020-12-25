@@ -6,13 +6,14 @@ import s from "./header.module.scss"
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../application/types";
-import {CartItemsType} from "../cart/cartItemsTypes";
-import {calculateTotalPrice} from "../cart/cartReducer/cartReducer";
+import {ItemsType} from "../items/itemsTypes";
+import {cartActions} from "../index";
 
 export const Header = React.memo(() => {
     const dispatch = useDispatch()
-    const cartItems = useSelector<AppRootStateType, CartItemsType>(state => state.cart.cartItems)
+    const cartItems = useSelector<AppRootStateType, ItemsType>(state => state.cart.cartItems)
     const totalPrice = useSelector<AppRootStateType, number>(state => state.cart.totalPrice)
+    const {calculateTotalPrice} = cartActions
 
     useEffect(() => {
         dispatch(calculateTotalPrice(cartItems))

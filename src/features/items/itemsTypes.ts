@@ -5,6 +5,7 @@ export type ItemType = {
     price: number
     itemImage: string
     isAdded: boolean
+    count: number
 }
 
 export type ItemsType = Array<ItemType>

@@ -12,7 +12,7 @@ function App() {
         <Container fixed>
             <Switch>
                 <Route exact path={'/'} render={() => <ItemsList/>}/>
-                <Route exact path={'/cart'} render={() => <Cart/>}/>
+                <Route path={'/cart'} render={() => <Cart/>}/>
                 <Route exact path="*" render={() => <div><h2>404 NOT FOUND</h2></div>}/>
             </Switch>
         </Container>

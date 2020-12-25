@@ -10,12 +10,13 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {useDispatch} from "react-redux";
-import {CartItemType} from "../../cartItemsTypes";
-import {decreaseCount, increaseCount, removeItem} from "../../cartReducer/cartReducer";
+import {ItemType} from "../../../items/itemsTypes";
+import {cartActions} from "../../../index";
 
 export const CartItem = React.memo((props: CartItemPropsType) => {
     const dispatch = useDispatch()
     const {id, title, description, price, itemImage, count} = props.cartItem
+    const {removeItem, increaseCount, decreaseCount} = cartActions
 
 
     const onRemoveItemHandler = useCallback(() => dispatch(removeItem({id})), [id, dispatch])
@@ -63,5 +64,5 @@ export const CartItem = React.memo((props: CartItemPropsType) => {
 })
 
 export type CartItemPropsType = {
-    cartItem: CartItemType
+    cartItem: ItemType
 }

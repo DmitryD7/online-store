@@ -1,5 +1,5 @@
 import {InitialStateType, slice} from "./cartReducer";
-import {CartItemsType} from "../cartItemsTypes";
+import {ItemsType} from "../../items/itemsTypes";
 
 let initialState: InitialStateType
 const {reducer: cartReducer} = slice
@@ -15,6 +15,7 @@ beforeEach(() => {
                 price: 50,
                 itemImage: '',
                 count: 1,
+                isAdded: true
             },
             {
                 id: '2',
@@ -23,8 +24,9 @@ beforeEach(() => {
                 price: 150,
                 itemImage: '',
                 count: 4,
+                isAdded: true
             },
-        ] as CartItemsType,
+        ] as ItemsType,
         totalPrice: 0
     }
 })
@@ -37,6 +39,7 @@ test('correct item should be added to array', () => {
         price: 10,
         itemImage: '',
         count: 2,
+        isAdded: true
     }
     const endState = cartReducer(initialState, addItemToCart({item: newItem}))
 

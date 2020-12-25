@@ -16,6 +16,7 @@ const cartItem = {
     price: 50,
     itemImage: 'https://cdn.shopify.com/s/files/1/0049/3732/products/5_900x.jpg?v=1334936803',
     count: 1,
+    isAdded: true
 }
 
 export const CartItemBaseExample = () => <CartItem cartItem={cartItem}/>

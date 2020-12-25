@@ -2,11 +2,10 @@ import React from "react";
 import {Provider} from "react-redux";
 import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
-import {HashRouter} from "react-router-dom";
-import {itemsReducer} from "../../features/items";
-import {cartReducer} from "../../features/cart";
+import {BrowserRouter} from "react-router-dom";
 import {AppRootStateType, RootReducerType} from "../../application/types";
-import {CartItemsType} from "../../features/cart/cartItemsTypes";
+import {cartReducer, itemsReducer} from "../../features";
+import thunkMiddleware from "redux-thunk";
 
 const rootReducer: RootReducerType = combineReducers({
     items: itemsReducer,
@@ -21,18 +20,20 @@ const initialGlobalState: AppRootStateType = {
                 title: 'Car',
                 description: 'toy for children',
                 price: 50,
-                itemImage: '',
+                itemImage: "https://cdn.shopify.com/s/files/1/0049/3732/products/5_900x.jpg?v=1334936803",
                 count: 1,
+                isAdded: true
             },
             {
                 id: '2',
                 title: 'Security camera',
                 description: 'wireless smart home camera',
                 price: 150,
-                itemImage: '',
+                itemImage: 'https://pro.sony/s3/2017/09/07145637/Cateogry-product-Imagery_Video-Security.jpg',
                 count: 4,
+                isAdded: true
             },
-        ] as CartItemsType,
+        ],
         totalPrice: 0
     },
     items: [
@@ -41,32 +42,35 @@ const initialGlobalState: AppRootStateType = {
             title: 'Car',
             description: 'toy for children',
             price: 50,
-            itemImage: '',
-            isAdded: false
+            itemImage: "https://cdn.shopify.com/s/files/1/0049/3732/products/5_900x.jpg?v=1334936803",
+            isAdded: false,
+            count: 1
         },
         {
             id: '2',
             title: 'Slow Cooker',
             description: 'pressure cooker',
             price: 70,
-            itemImage: '',
-            isAdded: false
+            itemImage: 'https://images-na.ssl-images-amazon.com/images/I/81-CPV4wwiL._AC_SX569_.jpg',
+            isAdded: false,
+            count: 1
         },
         {
             id: '3',
             title: 'Security camera',
             description: 'wireless smart home camera',
             price: 150,
-            itemImage: '',
-            isAdded: false
-        },
+            itemImage: 'https://pro.sony/s3/2017/09/07145637/Cateogry-product-Imagery_Video-Security.jpg',
+            isAdded: false,
+            count: 1
+        }
     ]
 }
 
 export const storyBookStore = configureStore({
     reducer: rootReducer,
     preloadedState: initialGlobalState,
-    //middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
 });
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
@@ -74,8 +78,8 @@ export const ReduxStoreProviderDecorator = (storyFn: any) => {
         {storyFn()}
     </Provider>
 }
-export const HashRouterDecorator = (storyFn: any) => {
-    return <HashRouter>
+export const BrowserRouterDecorator = (storyFn: any) => {
+    return <BrowserRouter>
         {storyFn()}
-    </HashRouter>
+    </BrowserRouter>
 }

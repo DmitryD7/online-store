@@ -13,7 +13,8 @@ beforeEach(() => {
             description: 'toy for children',
             price: 50,
             itemImage: '',
-            isAdded: false
+            isAdded: false,
+            count: 1
         },
         {
             id: '2',
@@ -21,7 +22,8 @@ beforeEach(() => {
             description: 'pressure cooker',
             price: 70,
             itemImage: '',
-            isAdded: false
+            isAdded: false,
+            count: 1
         },
         {
             id: '3',
@@ -29,7 +31,8 @@ beforeEach(() => {
             description: 'wireless smart home camera',
             price: 150,
             itemImage: '',
-            isAdded: false
+            isAdded: false,
+            count: 1
         },
     ]
 })

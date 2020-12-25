@@ -5,7 +5,7 @@ import App from './application/App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from "./application/store";
-import {HashRouter} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import firebase from 'firebase';
 
 const firebaseConfig = {
@@ -22,14 +22,14 @@ firebase.initializeApp(firebaseConfig)
 
 ReactDOM.render(
     <Provider store={store}>
-        <HashRouter>
+        <BrowserRouter>
             <App/>
-        </HashRouter>
+        </BrowserRouter>
     </Provider>,
     document.getElementById('root')
-);
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()
