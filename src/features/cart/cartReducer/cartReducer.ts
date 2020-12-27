@@ -1,27 +1,9 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {ItemsType, ItemType} from "../../items/itemsTypes";
+import {cartAPI} from "../../../api/aplicationAPI";
 
 const initialState = {
-    cartItems: [
-        {
-            id: '0',
-            title: 'Car',
-            description: 'toy for children',
-            price: 50,
-            itemImage: "https://cdn.shopify.com/s/files/1/0049/3732/products/5_900x.jpg?v=1334936803",
-            count: 1,
-            isAdded: true
-        },
-        {
-            id: '1',
-            title: 'Security camera',
-            description: 'wireless smart home camera',
-            price: 150,
-            itemImage: 'https://pro.sony/s3/2017/09/07145637/Cateogry-product-Imagery_Video-Security.jpg',
-            count: 1,
-            isAdded: true
-        },
-    ] as ItemsType,
+    cartItems: [] as ItemsType,
     totalPrice: 0
 }
 
@@ -33,13 +15,36 @@ export const calculateTotalPrice = createAsyncThunk<void, ItemsType>('cart/calcu
     thunkAPI.dispatch(setTotalPrice({totalPrice}))
 })
 
+export const fetchCartItems = createAsyncThunk<{cartItems: ItemsType}, undefined>('cart/fetchCartItems', async () => {
+    try {
+        const response = await cartAPI.fetchCartItems()
+        return {cartItems: response.data}
+    } catch (e) {
+        throw new Error(e.message)
+    }
+})
+
+export const createCartArray = createAsyncThunk('cart/createCartArray', async () => {
+    await cartAPI.createCartArray()
+})
+
+export const addNewItemToCart = createAsyncThunk<ItemType, { cartItem: ItemType, cartItems: ItemsType}>('cart/addNewItemToCart', async (param, thunkAPI) => {
+    try {
+        const response = await cartAPI.addNewItemToCart(param.cartItem, JSON.stringify(param.cartItems.length))
+        return param.cartItem
+    } catch (e) {
+        throw new Error(e.message)
+    }
+})
+
+
 export const slice = createSlice({
     name: 'cart',
     initialState: initialState,
     reducers: {
-        addItemToCart(state, action: PayloadAction<{ item: ItemType }>) {
+        /*addItemToCart(state, action: PayloadAction<{ item: ItemType }>) {
             state.cartItems.push({...action.payload.item})
-        },
+        },*/
         removeItem(state, action: PayloadAction<{ id: string }>) {
             const index = state.cartItems.findIndex(item => item.id === action.payload.id)
             state.cartItems.splice(index, 1)
@@ -57,8 +62,22 @@ export const slice = createSlice({
         setTotalPrice(state, action: PayloadAction<{ totalPrice: number }>) {
             state.totalPrice = action.payload.totalPrice
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(fetchCartItems.fulfilled, ((state, action) => {
+            state.cartItems = action.payload.cartItems
+        }))
+
+        builder.addCase(addNewItemToCart.fulfilled, ((state, action) => {
+            state.cartItems.push(action.payload)
+        }))
     }
 })
-export const {addItemToCart, removeItem, increaseCount, decreaseCount, setTotalPrice} = slice.actions
+export const {removeItem, increaseCount, decreaseCount, setTotalPrice} = slice.actions
+export const asyncCartItemsActions = {
+    fetchCartItems,
+    addNewItemToCart,
+    calculateTotalPrice
+}
 
 export type InitialStateType = typeof initialState

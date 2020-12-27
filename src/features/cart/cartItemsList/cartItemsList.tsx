@@ -10,14 +10,16 @@ export const CartItemsList = () => {
     const dispatch = useDispatch()
     const cartItems = useSelector<AppRootStateType, ItemsType>(state => state.cart.cartItems)
     const totalPrice = useSelector<AppRootStateType, number>(state => state.cart.totalPrice)
-    const {calculateTotalPrice} = cartActions
+    const {calculateTotalPrice, fetchCartItems} = cartActions
+    console.log('CARTITEMS: ', cartItems)
 
     useEffect(() => {
         dispatch(calculateTotalPrice(cartItems))
-    }, [cartItems, dispatch])
+        dispatch(fetchCartItems())
+    }, [])
 
     return <div className={s.cartItemsList}>
-        {cartItems.map(i => <CartItem
+        {cartItems && cartItems.map(i => <CartItem
             key={i.id}
             cartItem={i}
         />)}

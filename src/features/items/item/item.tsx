@@ -7,22 +7,24 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import {ItemType} from "../itemsTypes";
-import {useDispatch} from "react-redux";
+import {ItemsType, ItemType} from "../itemsTypes";
+import {useDispatch, useSelector} from "react-redux";
 import DoneIcon from '@material-ui/icons/Done';
 import {cartActions, itemsActions} from "../../index";
+import {AppRootStateType} from "../../../application/types";
 
 
 export const Item = React.memo((props: ItemPropsType) => {
     const dispatch = useDispatch()
+    const cartItems = useSelector<AppRootStateType, ItemsType>(state => state.cart.cartItems)
     const {itemImage, price, description, title, id, isAdded} = props.item
-    const {addItemToCart} = cartActions
+    const {addNewItemToCart} = cartActions
     const {updateItemStatus} = itemsActions
     // eslint-disable-next-line
     const cartItem: ItemType = {count: 1, itemImage, price, description, title, id, isAdded}
 
     const onAddClickHandler = useCallback(() => {
-        dispatch(addItemToCart({item: cartItem}))
+        dispatch(addNewItemToCart({cartItem: cartItem, cartItems: cartItems}))
         dispatch(updateItemStatus({id, isAdded: true}))
     }, [id, cartItem, dispatch])
 
