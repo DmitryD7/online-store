@@ -18,13 +18,13 @@ export const Item = React.memo((props: ItemPropsType) => {
     const dispatch = useDispatch()
     const cartItems = useSelector<AppRootStateType, ItemsType>(state => state.cart.cartItems)
     const {itemImage, price, description, title, id, isAdded} = props.item
-    const {addNewItemToCart} = cartActions
+    const {addItemToCart} = cartActions
     const {updateItemStatus} = itemsActions
     // eslint-disable-next-line
     const cartItem: ItemType = {count: 1, itemImage, price, description, title, id, isAdded}
 
     const onAddClickHandler = useCallback(() => {
-        dispatch(addNewItemToCart({cartItem: cartItem, cartItems: cartItems}))
+        dispatch(addItemToCart({cartItem:  props.item}))
         dispatch(updateItemStatus({id, isAdded: true}))
     }, [id, cartItem, dispatch])
 

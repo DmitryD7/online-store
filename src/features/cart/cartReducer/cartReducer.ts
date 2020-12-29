@@ -1,12 +1,25 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {ItemsType, ItemType} from "../../items/itemsTypes";
-import {cartAPI} from "../../../api/aplicationAPI";
 
-const initialState = {
-    cartItems: [] as ItemsType,
-    totalPrice: 0
+export const loadCartItemsState = () => {
+    try {
+        const serializedState = localStorage.getItem('cartItems');
+        if (serializedState === null) {
+            return [];
+        }
+        return JSON.parse(serializedState);
+    } catch (err) {
+        return undefined;
+    }
 }
-
+export const saveCartItem = (cartItems: ItemsType) => {
+    try {
+        const serializedState = JSON.stringify(cartItems);
+        localStorage.setItem('cartItems', serializedState);
+    } catch {
+        // ignore write errors
+    }
+}
 export const calculateTotalPrice = createAsyncThunk<void, ItemsType>('cart/calculateTotalPrice', async (param, thunkAPI) => {
     let totalPrice = 0
     await param.forEach(elem => {
@@ -15,7 +28,7 @@ export const calculateTotalPrice = createAsyncThunk<void, ItemsType>('cart/calcu
     thunkAPI.dispatch(setTotalPrice({totalPrice}))
 })
 
-export const fetchCartItems = createAsyncThunk<{cartItems: ItemsType}, undefined>('cart/fetchCartItems', async () => {
+/*export const fetchCartItems = createAsyncThunk<{cartItems: ItemsType}, undefined>('cart/fetchCartItems', async () => {
     try {
         const response = await cartAPI.fetchCartItems()
         return {cartItems: response.data}
@@ -23,61 +36,75 @@ export const fetchCartItems = createAsyncThunk<{cartItems: ItemsType}, undefined
         throw new Error(e.message)
     }
 })
-
-export const createCartArray = createAsyncThunk('cart/createCartArray', async () => {
-    await cartAPI.createCartArray()
-})
-
-export const addNewItemToCart = createAsyncThunk<ItemType, { cartItem: ItemType, cartItems: ItemsType}>('cart/addNewItemToCart', async (param, thunkAPI) => {
+export const addNewItemToCart = createAsyncThunk<ItemType, { cartItem: ItemType}>('cart/addNewItemToCart', async (param, thunkAPI) => {
+    let index = 0
     try {
-        const response = await cartAPI.addNewItemToCart(param.cartItem, JSON.stringify(param.cartItems.length))
+        const response = await cartAPI.addNewItemToCart(param.cartItem, JSON.stringify(index))
+        index++
         return param.cartItem
     } catch (e) {
         throw new Error(e.message)
     }
 })
+export const removeItemFromCart = createAsyncThunk<{ cartItemId: string }, { cartItem: ItemType, cartItems: ItemsType }>('cart/removeItemFromCart', async (param) => {
+    try {
+        let index = param.cartItems.indexOf(param.cartItem)
+        const response = await cartAPI.removeItemFromCart(JSON.stringify(index))
+        return {cartItemId: param.cartItem.id}
+    } catch (e) {
+        throw new Error(e.message)
+    }
+})*/
 
 
 export const slice = createSlice({
     name: 'cart',
-    initialState: initialState,
+    initialState: {
+        cartItems: undefined ? [] : loadCartItemsState() as ItemsType,
+        totalPrice: 0
+    },
     reducers: {
-        /*addItemToCart(state, action: PayloadAction<{ item: ItemType }>) {
-            state.cartItems.push({...action.payload.item})
-        },*/
+        addItemToCart(state, action: PayloadAction<{ cartItem: ItemType }>) {
+            state.cartItems.push({...action.payload.cartItem})
+            saveCartItem(state.cartItems)
+        },
         removeItem(state, action: PayloadAction<{ id: string }>) {
             const index = state.cartItems.findIndex(item => item.id === action.payload.id)
             state.cartItems.splice(index, 1)
+            saveCartItem(state.cartItems)
         },
         increaseCount(state, action: PayloadAction<{ id: string }>) {
             const index = state.cartItems.findIndex(item => item.id === action.payload.id)
             state.cartItems[index].count++
+            saveCartItem(state.cartItems)
         },
         decreaseCount(state, action: PayloadAction<{ id: string }>) {
             const index = state.cartItems.findIndex(item => item.id === action.payload.id)
             if (state.cartItems[index].count > 1) {
                 state.cartItems[index].count--
             }
+            saveCartItem(state.cartItems)
         },
         setTotalPrice(state, action: PayloadAction<{ totalPrice: number }>) {
             state.totalPrice = action.payload.totalPrice
         }
     },
-    extraReducers: builder => {
+    /*extraReducers: builder => {
         builder.addCase(fetchCartItems.fulfilled, ((state, action) => {
             state.cartItems = action.payload.cartItems
         }))
-
         builder.addCase(addNewItemToCart.fulfilled, ((state, action) => {
             state.cartItems.push(action.payload)
         }))
-    }
+        builder.addCase(removeItemFromCart.fulfilled, ((state, action) => {
+            const index = state.cartItems.findIndex(item => item.id === action.payload.cartItemId)
+            state.cartItems.splice(index, 1)
+        }))
+    }*/
 })
-export const {removeItem, increaseCount, decreaseCount, setTotalPrice} = slice.actions
+export const {increaseCount, decreaseCount, setTotalPrice, addItemToCart} = slice.actions
 export const asyncCartItemsActions = {
-    fetchCartItems,
-    addNewItemToCart,
-    calculateTotalPrice
+    calculateTotalPrice,
 }
 
-export type InitialStateType = typeof initialState
+//export type InitialStateType = typeof slice.reducer

@@ -5,18 +5,18 @@ import {CartItem} from "./cartItem/cartItem";
 import s from "./cartItemsList.module.scss"
 import {ItemsType} from "../../items/itemsTypes";
 import {cartActions} from "../../index";
+import {loadCartItemsState} from "../cartReducer/cartReducer";
 
 export const CartItemsList = () => {
     const dispatch = useDispatch()
     const cartItems = useSelector<AppRootStateType, ItemsType>(state => state.cart.cartItems)
     const totalPrice = useSelector<AppRootStateType, number>(state => state.cart.totalPrice)
-    const {calculateTotalPrice, fetchCartItems} = cartActions
-    console.log('CARTITEMS: ', cartItems)
+    const {calculateTotalPrice} = cartActions
 
     useEffect(() => {
         dispatch(calculateTotalPrice(cartItems))
-        dispatch(fetchCartItems())
-    }, [])
+        loadCartItemsState()
+    }, [dispatch, loadCartItemsState])
 
     return <div className={s.cartItemsList}>
         {cartItems && cartItems.map(i => <CartItem

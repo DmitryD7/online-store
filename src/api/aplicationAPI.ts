@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ItemsType, ItemType} from "../features/items/itemsTypes";
+import {ItemsType} from "../features/items/itemsTypes";
 
 const instanceApi = axios.create({
     baseURL: 'https://online-store-1600b-default-rtdb.firebaseio.com/'
@@ -14,6 +14,7 @@ export const itemsAPI = {
     }
 }
 
+/*
 export const cartAPI = {
     fetchCartItems() {
         return instanceApi.get<ItemsType>('cart/cartItems.json')
@@ -28,4 +29,4 @@ export const cartAPI = {
     removeItemFromCart(id: string) {
         return instanceApi.delete(`cart/cartItems/${id}.json`)
     }
-}
+}*/
