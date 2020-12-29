@@ -9,5 +9,4 @@ export const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
-
 })

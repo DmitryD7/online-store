@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {FormikHelpers, useFormik} from "formik";
 import {Button, createStyles, FormControl, FormGroup, FormLabel, makeStyles, TextField, Theme} from "@material-ui/core";
-import {CustomerDataType} from "../cartItemsTypes";
+import {CartCommonType, CustomerDataType} from "../cartItemsTypes";
 import s from "./customerData.module.scss"
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../application/types";
@@ -9,9 +9,11 @@ import {Alert} from "@material-ui/lab";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 export const CustomerData = () => {
-    const cartData = useSelector<AppRootStateType>(state => state.cart)
+    const cartData = useSelector<AppRootStateType, CartCommonType>(state => state.cart)
 
     const [isDone, setIsDone] = useState(false)
+    //const [areThereItems, setAreThereItems] = useState(false)
+
 
     const validate = (customerData: CustomerDataType) => {
         const errors: FormErrorType = {}
@@ -91,7 +93,7 @@ export const CustomerData = () => {
                         {...formik.getFieldProps('email')}
                     />
                     {formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
-                    <Button type={"submit"} variant={"outlined"} color={"secondary"}>buy now</Button>
+                    <Button type={"submit"} variant={"outlined"} color={"secondary"} disabled={!cartData.cartItems.length}>buy now</Button>
                 </FormGroup>
             </FormControl>
         </form>
