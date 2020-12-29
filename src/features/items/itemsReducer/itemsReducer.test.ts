@@ -1,9 +1,10 @@
 import {ItemsType} from "../itemsTypes";
 import {slice} from "./itemsReducer";
+import {itemsActions} from "../../index";
 
 let startState: ItemsType
 const {reducer: itemsReducer} = slice
-const {changeStatus} = slice.actions
+const {updateItemStatus} = itemsActions
 
 beforeEach(() => {
     startState = [
@@ -13,7 +14,7 @@ beforeEach(() => {
             description: 'toy for children',
             price: 50,
             itemImage: '',
-            isAdded: false,
+            isAdded: true,
             count: 1
         },
         {
@@ -37,8 +38,13 @@ beforeEach(() => {
     ]
 })
 
-test('correct item status should be set', () => {
-    const endState = itemsReducer (startState, changeStatus({isAdded: true, id: '2'}))
+test('Truthy item status should be set', () => {
+    const endState = itemsReducer (startState, updateItemStatus.fulfilled({id: '2', isAdded: true}, 'requestId', {id: '2', isAdded: true}))
 
     expect(endState[1].isAdded).toBeTruthy()
+})
+test('Falsy item status should be set', () => {
+    const endState = itemsReducer (startState, updateItemStatus.fulfilled({id: '1', isAdded: false}, 'requestId', {id: '1', isAdded: false}))
+
+    expect(endState[1].isAdded).toBeFalsy()
 })

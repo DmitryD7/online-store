@@ -1,4 +1,4 @@
-import {asyncCartItemsActions, calculateTotalPrice, slice as cartSlice} from "./cart/cartReducer/cartReducer";
+import {cartItemsActions, slice as cartSlice} from "./cart/cartReducer/cartReducer";
 import {asyncItemsActions, slice as itemsSlice} from "./items/itemsReducer/itemsReducer";
 
 const itemsActions = {
@@ -8,7 +8,7 @@ const itemsActions = {
 
 const cartActions = {
     ...cartSlice.actions,
-    ...asyncCartItemsActions
+    ...cartItemsActions
 }
 
 const itemsReducer = itemsSlice.reducer

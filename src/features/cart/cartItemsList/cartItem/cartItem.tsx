@@ -20,9 +20,9 @@ export const CartItem = React.memo((props: CartItemPropsType) => {
     const {updateItemStatus} = itemsActions
 
     const onRemoveItemHandler = useCallback(() => {
-        dispatch(updateItemStatus({id, isAdded: false}))
         dispatch(removeItem({id}))
-    }, [dispatch])
+        dispatch(updateItemStatus({id, isAdded: false}))
+    }, [dispatch, id, removeItem, updateItemStatus])
 
     const onIncreaseCountHandler = useCallback(() => dispatch(increaseCount({id})), [id, dispatch, increaseCount])
     const onDecreaseCountHandler = useCallback(() => dispatch(decreaseCount({id})), [id, dispatch, decreaseCount])

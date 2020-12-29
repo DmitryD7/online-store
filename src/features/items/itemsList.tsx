@@ -14,7 +14,7 @@ export const ItemsList = (props: ItemsListPropsType) => {
 
     useEffect(() => {
         dispatch(fetchItems())
-    }, [])
+    }, [dispatch, fetchItems])
 
     return <div>
         {items.length < 1 && <LinearProgress/>}

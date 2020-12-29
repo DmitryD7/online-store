@@ -11,6 +11,3 @@ export const store = configureStore({
     reducer: rootReducer,
 
 })
-
-// @ts-ignore
-window.store = store;

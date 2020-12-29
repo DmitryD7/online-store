@@ -17,7 +17,7 @@ export const Header = React.memo(() => {
 
     useEffect(() => {
         dispatch(calculateTotalPrice(cartItems))
-    }, [cartItems, dispatch])
+    }, [cartItems, dispatch, calculateTotalPrice])
 
     return <div>
         <AppBar position="static" color={"primary"}>

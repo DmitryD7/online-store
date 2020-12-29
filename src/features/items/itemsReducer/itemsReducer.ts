@@ -10,10 +10,9 @@ const fetchItems = createAsyncThunk<{ items: ItemsType }, undefined>('items/fetc
         throw new Error(e.message)
     }
 })
-
 const updateItemStatus = createAsyncThunk<{ id: string, isAdded: boolean }, { id: string, isAdded: boolean }>('items/updateItemStatus', async (param) => {
     try {
-        const response = await itemsAPI.changeItemStatus(param.id, param.isAdded)
+        await itemsAPI.changeItemStatus(param.id, param.isAdded)
         return {id: param.id, isAdded: param.isAdded}
     } catch (e) {
         throw new Error(e.message)

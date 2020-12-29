@@ -1,23 +1,23 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {ItemsType, ItemType} from "../../items/itemsTypes";
 
-export const loadCartItemsState = () => {
+const loadCartItemsState = () => {
     try {
         const serializedState = localStorage.getItem('cartItems');
         if (serializedState === null) {
             return [];
         }
         return JSON.parse(serializedState);
-    } catch (err) {
-        return undefined;
+    } catch (e) {
+        throw new Error(e.message)
     }
 }
 export const saveCartItem = (cartItems: ItemsType) => {
     try {
         const serializedState = JSON.stringify(cartItems);
         localStorage.setItem('cartItems', serializedState);
-    } catch {
-        // ignore write errors
+    } catch (e) {
+        throw new Error(e.message)
     }
 }
 export const calculateTotalPrice = createAsyncThunk<void, ItemsType>('cart/calculateTotalPrice', async (param, thunkAPI) => {
@@ -25,10 +25,11 @@ export const calculateTotalPrice = createAsyncThunk<void, ItemsType>('cart/calcu
     await param.forEach(elem => {
         totalPrice += elem.price * elem.count
     })
-    thunkAPI.dispatch(setTotalPrice({totalPrice}))
+    thunkAPI.dispatch(slice.actions.setTotalPrice({totalPrice}))
 })
 
-/*export const fetchCartItems = createAsyncThunk<{cartItems: ItemsType}, undefined>('cart/fetchCartItems', async () => {
+/*//Interaction with cart API
+export const fetchCartItems = createAsyncThunk<{cartItems: ItemsType}, undefined>('cart/fetchCartItems', async () => {
     try {
         const response = await cartAPI.fetchCartItems()
         return {cartItems: response.data}
@@ -89,7 +90,8 @@ export const slice = createSlice({
             state.totalPrice = action.payload.totalPrice
         }
     },
-    /*extraReducers: builder => {
+    /*//for async actions
+    extraReducers: builder => {
         builder.addCase(fetchCartItems.fulfilled, ((state, action) => {
             state.cartItems = action.payload.cartItems
         }))
@@ -102,9 +104,11 @@ export const slice = createSlice({
         }))
     }*/
 })
-export const {increaseCount, decreaseCount, setTotalPrice, addItemToCart} = slice.actions
-export const asyncCartItemsActions = {
-    calculateTotalPrice,
+export const cartItemsActions = {
+    calculateTotalPrice, loadCartItemsState
 }
 
-//export type InitialStateType = typeof slice.reducer
+export type InitialStateType = {
+    cartItems: ItemsType
+    totalPrice: number
+}

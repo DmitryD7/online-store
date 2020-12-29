@@ -41,7 +41,7 @@ test('correct item should be added to array', () => {
         count: 2,
         isAdded: true
     }
-    const endState = cartReducer(initialState, addItemToCart({item: newItem}))
+    const endState = cartReducer(initialState, addItemToCart({cartItem: newItem}))
 
     expect(endState.cartItems.length).toBe(3)
     expect(endState.cartItems[2].title).toBe('Apple')
