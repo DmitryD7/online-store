@@ -10,5 +10,8 @@
     align-items: center;
     justify-content: center;
   }
+  @media (max-width: 1139px) {
+    margin-bottom: 30px;
+  }
 }
 

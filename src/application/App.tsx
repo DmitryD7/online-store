@@ -9,7 +9,7 @@ import {Container} from '@material-ui/core';
 function App() {
     return <div className="App">
         <Header/>
-        <Container fixed>
+        <Container >
             <Switch>
                 <Route exact path={'/'} render={() => <ItemsList/>}/>
                 <Route path={'/cart'} render={() => <Cart/>}/>
